@@ -1,0 +1,7 @@
+create table usuario(
+cc int not null,
+nombre varchar(15) not null,
+contraseña varchar(40) not null
+);
+
+insert into usuario (cc, nombre, contraseña) values (1234567890, 'Fabi', 'passfabi');

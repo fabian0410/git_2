@@ -3,6 +3,9 @@ package iug;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+
+import persistencia.Conexion;
 
 public class Login {
     // Creacion de componentes
@@ -19,18 +22,16 @@ public class Login {
     // configuracion de los componentes
     private void init(){
 
-        Integer cc = 1234567890;
-        String password = "password";
+//        Integer cc = 1122334455;
+//        String password = "pass123";
 
+        // Configuracion de la vista
         JFrame jFrame = new JFrame();
-        jFrame.setSize(300,300);
-        jFrame.setTitle("Git 2");
+        jFrame.setSize(400,400);
+        jFrame.setTitle("Login");
         jFrame.setVisible(true);
         jFrame.add(main);
 
-
-        tfCC.setText(String.valueOf(cc));
-        tfpass.setText(password);
 
         // Boton de Validacion
         iniciar.addActionListener(new ActionListener() {
@@ -46,9 +47,19 @@ public class Login {
                     char[] p = tfpass.getPassword();
                     String validarPass = String.valueOf(p);
 
+                    String consulta = "SELECT * FROM usuario Where cc = "+Integer.valueOf(tfCC.getText())+" and contraseña = '"+validarPass+"'";
+                    Conexion conexion = new Conexion();
+                    Connection con = conexion.getConexion();
+                    String[] result = conexion.validar(consulta);
+                    conexion.cerrarConec();
+
+                    Integer cc = Integer.valueOf(result[0]);
+                    String password = result[2];
+
                     if (Integer.valueOf(tfCC.getText()).equals(cc) && validarPass.equals(password)){
                         System.out.println("Correcto");
                         Bienvenido n = new Bienvenido();
+                        n.setNombre(result[1]);
                         jFrame.setVisible(false);
                     }
                     else {
